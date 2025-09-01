@@ -134,7 +134,7 @@ if __name__ == '__main__':
 
     # If you want to quickly change the attack model and the number of attacks generated, you can modify the following entries
     # DataConfiguration([Attack model], [Simulation target in attack], [Test model], [Number of attacks generated], "subtask")
-    data_config = DataConfiguration("gpt-4o", "gpt-4o-mini", "gpt-4o-mini", 1, "subtask")
+    data_config = DataConfiguration("gpt-4o", "Qwen2.5-7B", "Qwen2.5-7B", 10, "subtask")
 
     #   Task Category [You can modify this selection to perform the task]
     #   "effect_test"       Test the actual effect of the attack
@@ -146,7 +146,7 @@ if __name__ == '__main__':
         target_mode = "train"
 
     parser = argparse.ArgumentParser()
-    output_len = 16384
+    output_len = 8192
 
     attack_model = data_config.attack1LM
     if task == "effect_test":
