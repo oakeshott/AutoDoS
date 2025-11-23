@@ -11,8 +11,7 @@ from fastchat.conversation import Conversation
 from openai import OpenAI
 
 from API_key import Siliconflow_BASE_URL, Siliconflow_API_KEY, Mistral_API, Mistral_BASE_URL, OPENAI_API_KEY, \
-    ALIYUN_API_KEY, ALIYUN_BASE_URL, DEEPSEEK_API_KEY, DEEPSEEK_BASE_URL
-
+    ALIYUN_API_KEY, ALIYUN_BASE_URL, DEEPSEEK_API_KEY, DEEPSEEK_BASE_URL 
 
 class GPT:
     API_RETRY_SLEEP = 10
@@ -113,7 +112,7 @@ class StreamGPT(GPT):
 class Qwen(StreamGPT):
     def __init__(self,model_name):
         super().__init__(model_name)
-        self.model_name = model_name.lower()+"-instruct"
+        self.model_name = "Qwen/"+model_name+"-Instruct"
         self.max_tokens = 8192
 
 class Llama(StreamGPT):

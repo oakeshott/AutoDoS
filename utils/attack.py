@@ -35,8 +35,8 @@ def generate_Tree_prompt(args):
                                                            Deep_Backtracking)
     print("Breadth Expansion finish")
 
-    if args.input_mode == "short":
-        subtask_answer_list = Breadth_Expansion
+    ## if args.input_mode == "short":
+    subtask_answer_list = Breadth_Expansion
     general_prompt = get_general_message(total_prompt,
                                          subtask_answer_list)
     logger.log(Description="sub task finished",

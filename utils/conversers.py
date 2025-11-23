@@ -56,6 +56,10 @@ def get_model_path_and_template(model_name):
             "path": "gpt-4o-mini-2024-07-18",
             "template": "chatgpt"
         },
+        "Qwen2.5-5B": {
+            "path": "Qwen/Qwen2.5-5B-Instruct",
+            "template": "qwen-5b-chat"
+        },
         "Qwen2.5-7B": {
             "path": "Qwen/Qwen2.5-7B-Instruct",
             "template": "qwen-7b-chat"
@@ -70,6 +74,10 @@ def get_model_path_and_template(model_name):
         },
         "Qwen2.5-72B": {
             "path": "Qwen/Qwen2.5-72B-Instruct",
+            "template": "qwen-7b-chat"
+        },
+        "Qwen2.5-1.5B": {
+            "path": "Qwen/Qwen2.5-1.5B-Instruct",
             "template": "qwen-7b-chat"
         },
         "DeepSeek-V2.5": {

@@ -6,3 +6,6 @@ model/*
 test_data/*
 main.py
 performance_test_demo.py
+uv.lock
+.DS_Store
+__pycache__

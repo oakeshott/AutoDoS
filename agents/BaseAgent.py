@@ -92,26 +92,54 @@ class BaseAgent(ABC):
             print(f"KeyError! content_str: {response}")
             raise KeyError
 
+        print("content_str: ", content_str)
         json_str = content_str.strip('```json\n').strip('\n```').strip()
+        JS_COMMENT_PATTERN = R"/\*[\s\S]*?\*/|//.*"
+        json_str = re.sub(JS_COMMENT_PATTERN, '', json_str)
+        # print("json_str", json_str)
         json_str = re.sub(r'\\', '', json_str)
         json_str = re.sub(r'[\x00-\x1F\x7F]', '', json_str)
         if '{{' in json_str and '}}' in json_str:
-            json_str = json_str.replace('{{', '{').replace('}}', '}')
+           json_str = json_str.replace('{{', '{').replace('}}', '}')
         if json_str.endswith("."):
-            json_str = json_str + '"}'
+           json_str = json_str + '"}'
         elif json_str.endswith('"'):
-            json_str = json_str + '}'
+           json_str = json_str + '}'
+        # elif json_str.endswith('}'):
+        #     if not re.search(r'\]\s*}$', json_str):
+        #         json_str = re.sub(r'([^\s"])(\s*)(})$', r'\1"\3', json_str)
         elif json_str.endswith('}'):
-            if not re.search(r'\]\s*}$', json_str):
-                json_str = re.sub(r'([^\s"])(\s*)(})$', r'\1"\3', json_str)
+            if not re.search(r'(?:\]\s*}$|}\s*}$|"\s*}\s*}$)', json_str):
+                json_str = re.sub(r'([^"\s}])(\s*)(})$', r'\1\2"\3', json_str) 
         json_str = re.sub(r',\s*}', '}', json_str)
         json_str = re.sub(r'^(.*?)(\{.*\})(.*?$)', r'\2', json_str, flags=re.DOTALL)
+        # print("json_str: ", json_str)
+        # def extract_text(text: str) -> dict:
+        #     lines = text.strip().splitlines()
+        #
+        #     if lines and lines[0].lstrip().startswith("```"):
+        #         lines = lines[1:]
+        #     if lines and lines[-1].strip().startswith("```"):
+        #         lines = lines[:-1]
+        #
+        #     s = "\n".join(lines).strip()
+        #
+        #     JS_COMMENT_PATTERN = r"/\*[\s\S]*?\*/|//.*"
+        #     s = re.sub(JS_COMMENT_PATTERN, "", s)
+        #     m = re.search(r"\{.*\}", s, flags=re.DOTALL)
+        #     if m:
+        #         s = m.group(0)
+        #     return s
+        # json_str = extract_text(content_str)
         try:
             nested_json = json.loads(json_str)
+            if "Post_dempt" in nested_json.keys():
+                nested_json["Post_prompt"] = nested_json["Post_dempt"]
+                del nested_json["Post_dempt"]
             return self._extract(nested_json)
-        except JSONDecodeError:
+        except JSONDecodeError as e:
             print(f"JSONDecodeError! Attempted to decode: {json_str}")
-            raise JSONDecodeError
+            raise JSONDecodeError(e.msg, e.doc, e.pos)
 
     @abstractmethod
     def _extract(self, nested_json):
